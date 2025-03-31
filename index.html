@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina di Benvenuto</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(135deg, #8A2BE2, #0000FF); /* Sfondo sfumato viola e blu */
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .welcome-paragraph, .question-paragraph {
+            background: rgba(255, 255, 255, 0.1); /* Sfondo quasi trasparente */
+            padding: 30px;
+            border-radius: 15px;
+            color: white; /* Testo bianco per contrastare meglio */
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px); /* Effetto di sfocatura */
+        }
+        .welcome-paragraph h1, .question-paragraph p {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: white; /* Testo bianco per il titolo */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .welcome-paragraph p, .question-paragraph p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            font-size: 1.2em;
+            color: white; /* Testo bianco */
+            background: transparent; /* Sfondo trasparente */
+            border: 1px solid white; /* Bordo bianco sottile */
+            border-radius: 25px; /* Bordi arrotondati */
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .button:hover {
+            background: rgba(255, 255, 255, 0.1); /* Sfondo leggermente bianco al passaggio del mouse */
+            transform: translateY(-2px); /* Effetto di sollevamento */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .input-risposta {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            font-size: 1.2em;
+            color: white; /* Testo bianco */
+            background: transparent; /* Sfondo trasparente */
+            border: 1px solid white; /* Bordo bianco sottile */
+            border-radius: 25px; /* Bordi arrotondati */
+            outline: none;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .input-risposta::placeholder {
+            color: white; /* Testo del placeholder bianco */
+            opacity: 0.8; /* Leggera trasparenza per il placeholder */
+        }
+        .input-risposta:focus {
+            background: rgba(255, 255, 255, 0.1); /* Sfondo leggermente bianco quando in focus */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .qr-code {
+            margin: 20px auto;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .antispam {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="welcome-paragraph">
+        <h1>Benvenuto!</h1>
+        <p>Siamo felici di averti qui. Esplora e scopri tutto ciò che abbiamo da offrire. Speriamo che la tua esperienza sia piacevole e memorabile.</p>
+        <a href="menu.html" class="button">Scopri il Menu</a>
+    </div>
+    <div class="qr-code" id="qrCode"></div>
+    <div class="question-paragraph">
+        <p>Quanto fa 3 + 1?</p>
+        <input type="text" class="input-risposta" placeholder="Inserisci la risposta" id="rispostaInput">
+        <button class="button" onclick="verifica()">Verifica</button>
+    </div>
+    <div class="antispam">
+        <p>Per favore, non inviare spam. Grazie!</p>
+    </div>
+
+    <script>
+        let qrCode;
+
+        // Funzione per aggiornate il codice QR con la risoluzione corrente
+        function aggiornaQRCode() {
+            const screenResolution = `${window.innerWidth}x${window.innerHeight}`;
+            if (qrCode) {
+                qrCode.clear(); // Cancella il codice QR esistente
+                qrCode.makeCode(screenResolution); // Genera un nuovo codice QR
+            } else {
+                qrCode = new QRCode(document.getElementById('qrCode'), {
+                    text: screenResolution,
+                    width: 128,
+                    height: 128
+                });
+            }
+        }
+
+        // Aggiorna il codice QR all'avvio e ogni volta che la finestra viene ridimensionata
+        aggiornaQRCode();
+        window.addEventListener('resize', aggiornaQRCode);
+
+        function verifica() {
+            const risposta = document.getElementById('rispostaInput').value;
+            if (risposta) {
+                alert(`Hai inserito: ${risposta}`);
+            } else {
+                alert("Per favore, inserisci una risposta.");
+            }
+        }
+    </script>
+</body>
+</html>
